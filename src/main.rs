@@ -66,7 +66,16 @@ fn update_register(
 fn main() {
     let mut clock = OutputDevice::new(0); // questo pin servirà per dare il clock al circuito
     let mut data = OutputDevice::new(5); // questo pin serivrà per scrivere i bist nel reggistro
-    let mut latch = OutputDevice::new(6); // questo pin servira per confermare i dati scritti nel reggistro e metterli in output
+    let mut latch = OutputDevice::new(6); // questo pin servirà per confermare i dati scritti nel reggistro e metterli in output
+    let mut reset = OutputDevice::new(21); // questo pin servira per resettare il reggistro
+
+    reset.off();
+    latch.on();
+
+    sleep(Duration::from_nanos(500));
+
+    latch.off();
+    reset.on();
 
     let mut numero = String::new();
 
