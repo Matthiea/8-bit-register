@@ -5,40 +5,40 @@ use std::{io::stdin, thread::sleep, time::Duration};
 
 use rust_gpiozero::*;
 
-// funzione per convertire lettere e numeri in binario
+// function to convert letters and numbers to binary
 fn num_from_dec_to_bin(mut num: u8) -> Vec<bool> {
-    let mut binario: Vec<bool> = Vec::new();
+    let mut binary: Vec<bool> = Vec::new();
 
     loop {
         if num % 2 == 1 && num != 0 {
-            binario.push(true);
+            binary.push(true);
             num = (num - 1) / 2;
         } else if num % 2 == 0 && num != 0 {
-            binario.push(false);
+            binary.push(false);
             num = num / 2;
         } else {
             break;
         }
     }
 
-    match binario.len() {
-        8 => binario,
+    match binary.len() {
+        8 => binary,
 
         1 | 2 | 3 | 4 | 5 | 6 | 7 => {
-            let x = 8 - binario.len();
+            let x = 8 - binary.len();
 
             for _i in 1..=x {
-                binario.push(false);
+                binary.push(false);
             }
 
-            return binario;
+            return binary;
         }
 
-        _ => panic!("il numero è maggiore di 255"),
+        _ => panic!("the number is greater than 255"),
     }
 }
 
-// funzione per l'update dell'output del reggistro
+// function for updating the register output
 fn update_register(
     message: Vec<bool>,
     mut clock_pin: OutputDevice,
@@ -64,10 +64,10 @@ fn update_register(
 }
 
 fn main() {
-    let mut clock = OutputDevice::new(0); // questo pin servirà per dare il clock al circuito
-    let mut data = OutputDevice::new(5); // questo pin serivrà per scrivere i bist nel reggistro
-    let mut latch = OutputDevice::new(6); // questo pin servirà per confermare i dati scritti nel reggistro e metterli in output
-    let mut reset = OutputDevice::new(21); // questo pin servira per resettare il reggistro
+    let mut clock = OutputDevice::new(0); // this pin will be used to clock the circuit
+    let mut data = OutputDevice::new(5); // this pin will be used to write the bits to the register
+    let mut latch = OutputDevice::new(6); // this pin will be used to confirm the written data in the register and put them in output
+    let mut reset = OutputDevice::new(21); // this pin will be used to reset the register
 
     reset.off();
     latch.on();
@@ -77,17 +77,17 @@ fn main() {
     latch.off();
     reset.on();
 
-    let mut numero = String::new();
+    let mut number = String::new();
 
-    println!("Inserisci il numero che dovra essere rappresentato in binario (MAX RANGE 256): ");
+    println!("Enter the number to be represented in binary (MAX RANGE 256): ");
 
-    stdin().read_line(&mut numero).expect(
-        "Errore nella lettura del numero possibile sumeramento del range o numero negativo",
-    );
+    stdin()
+        .read_line(&mut number)
+        .expect("Error in reading the number, possible range overflow or negative number");
 
-    let mut numero: u8 = numero.trim().parse().expect("Numero non valido");
+    let mut number: u8 = number.trim().parse().expect("Invalid number");
 
-    let bin = num_from_dec_to_bin(numero);
+    let bin = num_from_dec_to_bin(number);
 
     update_register(bin, clock, data, latch);
 }
