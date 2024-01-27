@@ -22,6 +22,7 @@ fn num_from_dec_to_bin(mut num: u8) -> Vec<bool> {
     }
 
     match binary.len() {
+        // This match is used to overwrite the previous numbers written on the register with 0
         8 => binary,
 
         1 | 2 | 3 | 4 | 5 | 6 | 7 => {
