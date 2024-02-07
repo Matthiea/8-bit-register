@@ -14,11 +14,17 @@ The program uses the *rust_gpiozero* library to communicate with the 8-bit regis
 
 ## How to Make It Work
 To make the project work, follow these steps:
-1. Clone the repository to your Raspberry Pi.
-2. Install the dependencies by running the command: `git clone https://github.com/Matthiea/8-bit-register.git`.
-3. Run the program with the required privileges: `cargo run`.
+1. Clone the repository to your Raspberry Pi by running the command: 
 
+```sh
+git clone https://github.com/Matthiea/8-bit-register.git
+```
 
+2. cd into the directory.
+3. Run the program with the command:
+```sh
+cargo run
+```
 
 ## ⚠️⚠️ Warning ⚠️⚠️
 
